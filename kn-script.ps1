@@ -1,4 +1,4 @@
-﻿# Thu nhỏ cửa sổ CMD cho vừa vặn
+# Thu nhỏ cửa sổ CMD cho vừa vặn
 $wshell = New-Object -ComObject wscript.shell
 $wshell.AppActivate('Windows PowerShell') | Out-Null
 Start-Sleep -Milliseconds 300
@@ -11,10 +11,16 @@ $rawUI.BufferSize = New-Object System.Management.Automation.Host.Size(80, 100)
 # Nếu chưa mở bằng CMD, mở lại bằng cửa sổ CMD mới
 if (-not $env:KN_SCRIPT_FROM_CMD) {
     $env:KN_SCRIPT_FROM_CMD = "1"
-    $scriptPath = $MyInvocation.MyCommand.Path
-    Start-Process cmd.exe -ArgumentList "/k set KN_SCRIPT_FROM_CMD=1 && powershell -ExecutionPolicy Bypass -File `"$scriptPath`""
-    exit
+
+    if ($MyInvocation.MyCommand.Path) {
+        $scriptPath = $MyInvocation.MyCommand.Path
+        Start-Process cmd.exe -ArgumentList "/k set KN_SCRIPT_FROM_CMD=1 && powershell -ExecutionPolicy Bypass -File `"$scriptPath`""
+        exit
+    } else {
+        Write-Host "[!] Script đang được chạy từ Internet (irm). Bỏ qua bước mở lại CMD." -ForegroundColor Yellow
+    }
 }
+
 
 function Show-Menu {
     Clear-Host
