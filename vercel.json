@@ -1,5 +1,16 @@
 {
   "rewrites": [
     { "source": "/get", "destination": "/kn-script.ps1" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    }
   ]
 }
