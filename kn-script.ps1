@@ -35,6 +35,7 @@ function Show-Menu {
     Write-Host "[5] Tải Office Deployment Tool" -ForegroundColor Green
     Write-Host "[6] Tải Config Office" -ForegroundColor Green
     Write-Host "[7] Cài Office (Tự động, không cần [5] và [6])" -ForegroundColor Green
+    Write-Host "[8] Cài LocalSend (Gửi tập tin qua mạng LAN)" -ForegroundColor Green
     Write-Host ""
     Write-Host "[0] Thoát bằng tay đi =)))" -ForegroundColor Red
     Write-Host ""
@@ -357,7 +358,26 @@ function Install-Office {
     Pause
 }
 
+function Install-LocalSend {
+    Write-Host ">> Đang tải LocalSend (Windows)... " -ForegroundColor Cyan
+    $url = "https://github.com/localsend/localsend/releases/download/v1.17.0/LocalSend-1.17.0-windows-x86-64.exe"
+    $file = "$env:TEMP\LocalSend.exe"
 
+    try {
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        $headers = @{ "User-Agent" = "Mozilla/5.0" }
+        Invoke-WebRequest -Uri $url -OutFile $file -Headers $headers -UseBasicParsing -ErrorAction Stop
+    } catch {
+        Write-Host "[X] Lỗi khi tải LocalSend: $($_.Exception.Message)" -ForegroundColor Red
+        Pause
+        return
+    }
+
+    Write-Host ">> Đang chạy LocalSend..." -ForegroundColor Yellow
+    Start-Process $file
+    Write-Host "[✓] Đã mở LocalSend!" -ForegroundColor Green
+    Pause
+}
 
 
 
@@ -375,6 +395,7 @@ function Main {
             "5" { Download-OfficeDeploymentTool }
             "6" { Download-Config }
             "7" { Install-Office }
+            "8" { Install-LocalSend }
             "0" { Write-Host ">> Thoát chương trình..." -ForegroundColor Gray; break }
             Default { Write-Host "[X] Lựa chọn không hợp lệ!" -ForegroundColor Red; Pause }
         }
