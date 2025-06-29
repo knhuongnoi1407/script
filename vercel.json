@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/get", "destination": "/kn-script.ps1" }
+  ]
+}
