@@ -339,7 +339,7 @@ function Install-Office {
                 "",
                 "1. Mở Command Prompt (CMD) bằng quyền Administrator",
 		"2. Gõ lệnh chuyển ổ đĩa:",
-		"   D:",
+		"   ${driveLetter}",
                 "3. Gõ lệnh sau để chuyển thư mục:",
                 "   cd ${driveLetter}:\$folderName",
                 "4. Gõ lệnh để bắt đầu cài đặt:",
