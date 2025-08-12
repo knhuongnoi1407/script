@@ -396,7 +396,12 @@ function Main {
             "6" { Download-Config }
             "7" { Install-Office }
             "8" { Install-LocalSend }
-            "0" { Write-Host ">> Thoát chương trình..." -ForegroundColor Gray; return }
+            "0" {
+				Clear-Host
+    			Write-Host "Đang thoát..." -ForegroundColor Gray
+    			Start-Sleep -Milliseconds 500
+    			exit
+			}
             Default { Write-Host "[X] Lựa chọn không hợp lệ!" -ForegroundColor Red; Pause }
         }
     }
@@ -405,4 +410,5 @@ function Main {
 Main
 Write-Host "`nNhấn phím bất kỳ để thoát..." -ForegroundColor DarkGray
 Pause
+
 
