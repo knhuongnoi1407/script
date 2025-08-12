@@ -385,7 +385,7 @@ function Install-LocalSend {
 function Main {
     while ($true) {
         Show-Menu
-        $choice = Read-Host "Chọn một tùy chọn [0-7]"
+        $choice = Read-Host "Chọn một tùy chọn [0-8]"
 
         switch ($choice) {
             "1" { Install-VSCode }
@@ -396,7 +396,7 @@ function Main {
             "6" { Download-Config }
             "7" { Install-Office }
             "8" { Install-LocalSend }
-            "0" { Write-Host ">> Thoát chương trình..." -ForegroundColor Gray; break }
+            "0" { Write-Host ">> Thoát chương trình..." -ForegroundColor Gray; return }
             Default { Write-Host "[X] Lựa chọn không hợp lệ!" -ForegroundColor Red; Pause }
         }
     }
@@ -405,3 +405,4 @@ function Main {
 Main
 Write-Host "`nNhấn phím bất kỳ để thoát..." -ForegroundColor DarkGray
 Pause
+
