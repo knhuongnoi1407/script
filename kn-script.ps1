@@ -37,7 +37,7 @@ function Show-Menu {
     Write-Host "[7] Cài Office (Tự động, không cần [5] và [6])" -ForegroundColor Green
     Write-Host "[8] Cài LocalSend (Gửi tập tin qua mạng LAN)" -ForegroundColor Green
     Write-Host ""
-    Write-Host "[0] Thoát bằng tay đi =)))" -ForegroundColor Red
+    Write-Host "[0] Thoát" -ForegroundColor Red
     Write-Host ""
 }
 
@@ -130,7 +130,7 @@ function Install-Extensions {
 
 function Activate-Windows {
     Write-Host ">> Đang mở CMD để chạy script kích hoạt..." -ForegroundColor Yellow
-    Start-Process cmd.exe -ArgumentList '/k powershell -nop -ep bypass -c "irm https://massgrave.dev/get | iex"'
+    Start-Process cmd.exe -ArgumentList '/k powershell -nop -ep bypass -c "irm https://get.activated.win | iex"'
 }
 
 function Download-OfficeDeploymentTool {
@@ -410,5 +410,6 @@ function Main {
 Main
 Write-Host "`nNhấn phím bất kỳ để thoát..." -ForegroundColor DarkGray
 Pause
+
 
 
