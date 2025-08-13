@@ -36,6 +36,7 @@ function Show-Menu {
     Write-Host "[6] Tải Config Office" -ForegroundColor Green
     Write-Host "[7] Cài Office (Tự động, không cần [5] và [6])" -ForegroundColor Green
     Write-Host "[8] Cài LocalSend (Gửi tập tin qua mạng LAN)" -ForegroundColor Green
+    Write-Host "[9] Cài WinRAR" -ForegroundColor Green
     Write-Host ""
     Write-Host "[0] Thoát" -ForegroundColor Red
     Write-Host ""
@@ -396,13 +397,46 @@ function Install-LocalSend {
     Pause
 }
 
+function Install-WinRAR {
+    Clear-Host
+    Write-Host "========== Chọn phiên bản WinRAR ==========" -ForegroundColor Cyan
+    Write-Host "[1] 64-bit" -ForegroundColor Green
+    Write-Host "[2] 32-bit" -ForegroundColor Green
+    Write-Host "[0] Quay lại" -ForegroundColor Red
+    $archChoice = Read-Host "Chọn [1-2] hoặc [0] để quay lại"
 
+    switch ($archChoice) {
+        "0" { return }
+        "1" { $url = "https://www.rarlab.com/rar/winrar-x64-602.exe" }   # 64-bit
+        "2" { $url = "https://www.rarlab.com/rar/winrar-x86-602.exe" }    # 32-bit
+        Default { Write-Host "[X] Lựa chọn không hợp lệ!" -ForegroundColor Red; Pause; return }
+    }
+
+    $file = "$env:TEMP\winrar.exe"
+
+    Write-Host ">> Đang tải WinRAR từ $url ..." -ForegroundColor Cyan
+    try {
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        Invoke-WebRequest -Uri $url -OutFile $file -UseBasicParsing -ErrorAction Stop
+    } catch {
+        Write-Host "[X] Lỗi khi tải WinRAR: $($_.Exception.Message)" -ForegroundColor Red
+        Pause
+        return
+    }
+
+    Write-Host ">> Đang cài WinRAR và tích hợp vào Windows..." -ForegroundColor Yellow
+    # /S = silent, /Reg = thiết lập mặc định cho ZIP và các định dạng, /D="..." = folder cài
+    Start-Process -FilePath $file -ArgumentList "/S /Reg" -Wait
+
+    Write-Host "[✓] Đã cài WinRAR và đặt làm mặc định cho ZIP!" -ForegroundColor Green
+    Pause
+}
 
 
 function Main {
     while ($true) {
         Show-Menu
-        $choice = Read-Host "Chọn một tùy chọn [0-8]"
+        $choice = Read-Host "Chọn một tùy chọn [0-9]"
 
         switch ($choice) {
             "1" { Install-VSCode }
@@ -413,6 +447,7 @@ function Main {
             "6" { Download-Config }
             "7" { Install-Office }
             "8" { Install-LocalSend }
+	    "9" { Install-WinRAR }
             "0" {
 				Clear-Host
     			Write-Host "Đang thoát..." -ForegroundColor Gray
@@ -427,7 +462,6 @@ function Main {
 Main
 Write-Host "`nNhấn phím bất kỳ để thoát..." -ForegroundColor DarkGray
 Pause
-
 
 
 
