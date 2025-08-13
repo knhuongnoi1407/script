@@ -115,9 +115,26 @@ function Install-Extensions {
     }
 
     $extensions = @(
-        "ms-python.python",
-        "esbenp.prettier-vscode",
-        "ms-vscode.cpptools"
+        "batisteo.vscode-django",
+		"battlebas.kivy-vscode",
+  		"chrisru.vscode-nightsky",
+		"donjayamanne.python-environment-manager",
+  		"donjayamanne.python-extension-pack",
+   "esbenp.prettier-vscode",
+   "github.github-vscode-theme",
+   "kevinrose.vsc-python-indent",
+   "ms-python.debugpy",
+   "ms-python.python",
+   "ms-python.vscode-pylance",
+   "negokaz.live-server-preview",
+   "njpwerner.autodocstring",
+   "pkief.material-icon-theme",
+   "ritwickdey.liveserver",
+   "streetsidesoftware.code-spell-checker",
+   "streetsidesoftware.code-spell-checker-vietnamese",
+   "visualstudioexptteam.intellicode-api-usage-examples",
+   "visualstudioexptteam.vscodeintellicode",
+   "wholroyd.jinja"
     )
 
     Write-Host ">> Đang cài các extension cho VS Code..." -ForegroundColor Cyan
@@ -410,6 +427,7 @@ function Main {
 Main
 Write-Host "`nNhấn phím bất kỳ để thoát..." -ForegroundColor DarkGray
 Pause
+
 
 
 
