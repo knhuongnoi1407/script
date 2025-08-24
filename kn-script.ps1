@@ -34,7 +34,7 @@ function Show-Menu {
     Write-Host "[4] Active Windows/Office" -ForegroundColor Yellow
     Write-Host "[5] Tải Office Deployment Tool" -ForegroundColor Green
     Write-Host "[6] Tải Config Office" -ForegroundColor Green
-    Write-Host "[7] Cài Office (Tự động, không cần [5] và [6])" -ForegroundColor Green
+    Write-Host "[7] Cài Office (Tự động, không cần [5] và [6])" -ForegroundColor Yellow
     Write-Host "[8] Cài LocalSend (Gửi tập tin qua mạng LAN)" -ForegroundColor Green
     Write-Host "[9] Cài WinRAR" -ForegroundColor Green
     Write-Host ""
@@ -121,21 +121,21 @@ function Install-Extensions {
   		"chrisru.vscode-nightsky",
 		"donjayamanne.python-environment-manager",
   		"donjayamanne.python-extension-pack",
-   "esbenp.prettier-vscode",
-   "github.github-vscode-theme",
-   "kevinrose.vsc-python-indent",
-   "ms-python.debugpy",
-   "ms-python.python",
-   "ms-python.vscode-pylance",
-   "negokaz.live-server-preview",
-   "njpwerner.autodocstring",
-   "pkief.material-icon-theme",
-   "ritwickdey.liveserver",
-   "streetsidesoftware.code-spell-checker",
-   "streetsidesoftware.code-spell-checker-vietnamese",
-   "visualstudioexptteam.intellicode-api-usage-examples",
-   "visualstudioexptteam.vscodeintellicode",
-   "wholroyd.jinja"
+        "esbenp.prettier-vscode",
+        "github.github-vscode-theme",
+        "kevinrose.vsc-python-indent",
+        "ms-python.debugpy",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "negokaz.live-server-preview",
+        "njpwerner.autodocstring",
+        "pkief.material-icon-theme",
+        "ritwickdey.liveserver",
+        "streetsidesoftware.code-spell-checker",
+        "streetsidesoftware.code-spell-checker-vietnamese",
+        "visualstudioexptteam.intellicode-api-usage-examples",
+        "visualstudioexptteam.vscodeintellicode",
+        "wholroyd.jinja"
     )
 
     Write-Host ">> Đang cài các extension cho VS Code..." -ForegroundColor Cyan
@@ -234,7 +234,7 @@ function Install-Office {
     Write-Host "========== Cài Đặt Office ==========" -ForegroundColor Cyan
     Write-Host "[1] Office Professional Plus 2019" -ForegroundColor Green
     Write-Host "[2] Office Professional Plus 2021" -ForegroundColor Green
-    Write-Host "[3] Office Professional Plus 2024" -ForegroundColor Green
+    Write-Host "[3] Office Professional Plus 2024 (không khuyên dùng)" -ForegroundColor Green
     Write-Host "[0] Quay lại" -ForegroundColor Red
     $yearChoice = Read-Host "Chọn [1-3] hoặc [0] để quay lại"
     if ($yearChoice -eq "0") { return }
@@ -267,6 +267,7 @@ function Install-Office {
 
     while ($true) {
         $driveLetter = Read-Host "Nhập ổ đĩa bạn muốn lưu (ví dụ: C, D, E)"
+        $driveLetter = $driveLetter.ToUpper()
         if (Test-Path "$driveLetter`:") {
             break
         } else {
@@ -334,44 +335,40 @@ function Install-Office {
     $setupPath = Join-Path $officeDir "setup.exe"
 
     if (Test-Path $exePath) {
-        Write-Host "`n[!] Đang mở file ODT để người dùng chọn thư mục lưu và nhấn Accept..." -ForegroundColor Yellow
-        Start-Process -FilePath $exePath
+    Write-Host "`n[!] Đang mở file ODT để người dùng chọn thư mục lưu và nhấn Accept..." -ForegroundColor Yellow
+    Start-Process -FilePath $exePath
 
-        Write-Host ">> Sau khi cửa sổ hiện ra, hãy chọn thư mục: This PC > $driveLetter > $folderName" -ForegroundColor Cyan
-        Write-Host ">> Và nhấn nút Accept để bung file setup.exe." -ForegroundColor Cyan
-        Write-Host ">> Đang đợi file setup.exe được bung ra..." -ForegroundColor Cyan
+    Write-Host ">> Sau khi cửa sổ hiện ra, hãy chọn thư mục: This PC > $driveLetter > $folderName" -ForegroundColor Cyan
+    Write-Host ">> Và nhấn nút Accept để bung file setup.exe." -ForegroundColor Cyan
+    Write-Host ">> Đang đợi file setup.exe được bung ra..." -ForegroundColor Cyan
 
-        $timeout = 60
-        $elapsed = 0
-        while (-not (Test-Path $setupPath) -and $elapsed -lt $timeout) {
-            Start-Sleep -Seconds 1
-            $elapsed++
-        }
-
-        if (Test-Path $setupPath) {
-            Write-Host "[✓] setup.exe đã sẵn sàng!" -ForegroundColor Green
-
-            $guidePath = Join-Path $officeDir "Hướng dẫn sử dụng.txt"
-            $guideContent = @(
-                "Hướng dẫn cài đặt Office thủ công:",
-                "",
-                "1. Mở Command Prompt (CMD) bằng quyền Administrator",
-		"2. Gõ lệnh chuyển ổ đĩa:",
-		"   ${driveLetter}:",
-                "3. Gõ lệnh sau để chuyển thư mục:",
-                "   cd ${driveLetter}:\$folderName",
-                "4. Gõ lệnh để bắt đầu cài đặt:",
-                "   setup.exe /configure $configFileName"
-            )
-            $guideContent | Set-Content -Path $guidePath -Encoding UTF8
-
-            Write-Host "`n[✓] Đã tạo file 'Hướng dẫn sử dụng.txt' trong thư mục $folderName" -ForegroundColor Green
-        } else {
-            Write-Host "[X] Không tìm thấy setup.exe sau 60 giây. Vui lòng kiểm tra lại thao tác!" -ForegroundColor Red
-        }
-    } else {
-        Write-Host "[X] Không tìm thấy file officedeploymenttool_18827-20140.exe!" -ForegroundColor Red
+    $timeout = 60
+    $elapsed = 0
+    while (-not (Test-Path $setupPath) -and $elapsed -lt $timeout) {
+        Start-Sleep -Seconds 1
+        $elapsed++
     }
+
+    if (Test-Path $setupPath) {
+        Write-Host "[✓] setup.exe đã sẵn sàng!" -ForegroundColor Green
+
+        $guidePath = Join-Path $officeDir "Hướng dẫn sử dụng.txt"
+        $guideContent = @(
+            "Hướng dẫn cài đặt Office thủ công:",
+            "",
+            "1. Mở Command Prompt (CMD) bằng quyền Administrator",
+            "2. Gõ lệnh sau để chuyển thư mục:",
+            "cd /${driveLetter} ${driveLetter}:\$folderName",
+            "3. Gõ lệnh để bắt đầu cài đặt:",
+            "setup.exe /configure $configFileName"
+        )
+        $guideContent | Set-Content -Path $guidePath -Encoding UTF8
+        Write-Host "`n[✓] Đã tạo file 'Hướng dẫn sử dụng.txt' trong thư mục $folderName" -ForegroundColor Green
+    } else {
+        Write-Host "[X] Không tìm thấy setup.exe sau 60 giây. Vui lòng kiểm tra lại thao tác!" -ForegroundColor Red
+    }
+    }
+
 
     Pause
 }
@@ -462,6 +459,5 @@ function Main {
 Main
 Write-Host "`nNhấn phím bất kỳ để thoát..." -ForegroundColor DarkGray
 Pause
-
 
 
