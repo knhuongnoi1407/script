@@ -15,16 +15,5 @@
       "source": "/get",
       "destination": "/browser-block.html"
     }
-  ],
-  "headers": [
-    {
-      "source": "/kn-script.ps1",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "text/plain; charset=utf-8"
-        }
-      ]
-    }
   ]
 }
