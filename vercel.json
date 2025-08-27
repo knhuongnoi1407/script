@@ -4,20 +4,27 @@
   ],
   "headers": [
     {
-      "source": "/(.*)\\.html",
-      "headers": [
+      "source": "/get",
+      "has": [
         {
-          "key": "Content-Type",
-          "value": "text/html; charset=utf-8"
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*PowerShell.*"
         }
-      ]
-    },
-    {
-      "source": "/(.*)\\.ps1",
+      ],
       "headers": [
         {
           "key": "Content-Type",
           "value": "text/plain; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/get",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
         }
       ]
     }
