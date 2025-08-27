@@ -1,14 +1,11 @@
-# Thu nhỏ cửa sổ CMD cho vừa vặn
 $wshell = New-Object -ComObject wscript.shell
 $wshell.AppActivate('Windows PowerShell') | Out-Null
 Start-Sleep -Milliseconds 300
 
-# Chỉnh lại kích thước cửa sổ CMD
 $rawUI = $Host.UI.RawUI
-$rawUI.WindowSize = New-Object System.Management.Automation.Host.Size(80, 20)   # Số ký tự ngang x dọc
+$rawUI.WindowSize = New-Object System.Management.Automation.Host.Size(80, 20)   
 $rawUI.BufferSize = New-Object System.Management.Automation.Host.Size(80, 100)
 
-# Nếu chưa mở bằng CMD, mở lại bằng cửa sổ CMD mới
 if (-not $env:KN_SCRIPT_FROM_CMD) {
     $env:KN_SCRIPT_FROM_CMD = "1"
 
@@ -17,7 +14,7 @@ if (-not $env:KN_SCRIPT_FROM_CMD) {
         Start-Process cmd.exe -ArgumentList "/k set KN_SCRIPT_FROM_CMD=1 && powershell -ExecutionPolicy Bypass -File `"$scriptPath`""
         exit
     } else {
-        Write-Host "[!] Script đang được chạy từ Internet (irm). Bỏ qua bước mở lại CMD." -ForegroundColor Yellow
+        Write-Host "[!] Script dang duoc chay tu Internet (irm). Bo qua buoc mo lai CMD." -ForegroundColor Yellow
     }
 }
 
@@ -28,34 +25,34 @@ function Show-Menu {
     Write-Host "                        KN SCRIPT                          " -ForegroundColor Cyan
     Write-Host "============================================================" -ForegroundColor Gray
     Write-Host ""
-    Write-Host "[1] Cài Visual Studio Code" -ForegroundColor Green
-    Write-Host "[2] Cài Python (chọn phiên bản)" -ForegroundColor Green
-    Write-Host "[3] Cài Extension cho VS Code" -ForegroundColor Green
+    Write-Host "[1] Cai Visual Studio Code" -ForegroundColor Green
+    Write-Host "[2] Cai Python (chon phien ban)" -ForegroundColor Green
+    Write-Host "[3] Cai Extension cho VS Code" -ForegroundColor Green
     Write-Host "[4] Active Windows/Office" -ForegroundColor Yellow
-    Write-Host "[5] Tải Office Deployment Tool" -ForegroundColor Green
-    Write-Host "[6] Tải Config Office" -ForegroundColor Green
-    Write-Host "[7] Cài Office (Tự động, không cần [5] và [6])" -ForegroundColor Yellow
-    Write-Host "[8] Cài LocalSend (Gửi tập tin qua mạng LAN)" -ForegroundColor Green
-    Write-Host "[9] Cài WinRAR" -ForegroundColor Green
+    Write-Host "[5] Tai Office Deployment Tool" -ForegroundColor Green
+    Write-Host "[6] Tai Config Office" -ForegroundColor Green
+    Write-Host "[7] Cai Office (Tu dong, khong can [5] va [6])" -ForegroundColor Yellow
+    Write-Host "[8] Cai LocalSend (Gui tap tin qua mang LAN)" -ForegroundColor Green
+    Write-Host "[9] Cai WinRAR" -ForegroundColor Green
     Write-Host ""
-    Write-Host "[0] Thoát" -ForegroundColor Red
+    Write-Host "[0] Thoat | Exit" -ForegroundColor Red
     Write-Host ""
 }
 
 function Install-VSCode {
-    Write-Host ">> Đang tải và cài đặt VS Code..." -ForegroundColor Cyan
+    Write-Host ">> Dang tai va cai dat VS Code..." -ForegroundColor Cyan
     $url = "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user"
     $path = "$env:TEMP\vscode.exe"
     Invoke-WebRequest $url -OutFile $path
     Start-Process $path -ArgumentList "/silent","/mergetasks=!runcode" -Wait
-    Write-Host "[✓] Đã cài VS Code!" -ForegroundColor Green
+    Write-Host "[✓] Da cai VS Code!" -ForegroundColor Green
     Pause
 }
 
 function Install-Python {
     while ($true) {
         Clear-Host
-        Write-Host "============== Chọn phiên bản Python ==============" -ForegroundColor Cyan
+        Write-Host "============== Chon phien ban Python ==============" -ForegroundColor Cyan
         Write-Host "[1] Python 3.12.3"
         Write-Host "[2] Python 3.11.9"
         Write-Host "[3] Python 3.10.14"
@@ -65,10 +62,10 @@ function Install-Python {
         Write-Host "[7] Python 3.6.8"
         Write-Host "[8] Python 3.5.4"
         Write-Host "[9] Python 2.7.18"
-        Write-Host "[0] Quay lại menu chính"
+        Write-Host "[0] Quay lai menu chinh"
         Write-Host ""
 
-        $subChoice = Read-Host "Chọn phiên bản để cài [1-9] hoặc [0] để quay lại"
+        $subChoice = Read-Host "Chon phien ban de cai [1-9] hoac [0] de quay lai"
 
         $pythonVersions = @{
             "1" = "https://www.python.org/ftp/python/3.12.3/python-3.12.3-amd64.exe"
@@ -88,20 +85,20 @@ function Install-Python {
             $url = $pythonVersions[$subChoice]
             $file = "$env:TEMP\python-installer.exe"
 
-            Write-Host ">> Đang tải Python từ $url..." -ForegroundColor Cyan
+            Write-Host ">> Dang tai Python từ $url..." -ForegroundColor Cyan
             Invoke-WebRequest $url -OutFile $file
 
-            Write-Host ">> Đang cài đặt Python..." -ForegroundColor Yellow
+            Write-Host ">> Dang cai dat Python..." -ForegroundColor Yellow
             if ($url.EndsWith(".msi")) {
                 Start-Process msiexec.exe -ArgumentList "/i `"$file`" /qn" -Wait
             } else {
                 Start-Process -FilePath $file -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1" -Wait
             }
 
-            Write-Host "[✓] Đã cài Python!" -ForegroundColor Green
+            Write-Host "[✓] Da cai Python!" -ForegroundColor Green
             Pause
         } else {
-            Write-Host "[X] Lựa chọn không hợp lệ!" -ForegroundColor Red
+            Write-Host "[X] Lua chon khong hop le!" -ForegroundColor Red
             Pause
         }
     }
@@ -110,7 +107,7 @@ function Install-Python {
 function Install-Extensions {
     $code = "$env:LOCALAPPDATA\Programs\Microsoft VS Code\bin\code.cmd"
     if (-Not (Test-Path $code)) {
-        Write-Host "[!] Không tìm thấy VS Code! Hãy cài đặt trước." -ForegroundColor Red
+        Write-Host "[!] Khong tim thay VS Code! Hay cai dat truoc." -ForegroundColor Red
         Pause
         return
     }
@@ -138,16 +135,16 @@ function Install-Extensions {
         "wholroyd.jinja"
     )
 
-    Write-Host ">> Đang cài các extension cho VS Code..." -ForegroundColor Cyan
+    Write-Host ">> Dang cai cac extention VS Code..." -ForegroundColor Cyan
     foreach ($ext in $extensions) {
         & $code --install-extension $ext --force
     }
-    Write-Host "[✓] Đã cài xong extension!" -ForegroundColor Green
+    Write-Host "[✓] Da cai xong extension!" -ForegroundColor Green
     Pause
 }
 
 function Activate-Windows {
-    Write-Host ">> Đang mở CMD để chạy script kích hoạt..." -ForegroundColor Yellow
+    Write-Host ">> Dang mo CMD de chay script kich hoat..." -ForegroundColor Yellow
     Start-Process cmd.exe -ArgumentList '/k powershell -nop -ep bypass -c "irm https://get.activated.win | iex"'
 }
 
@@ -156,20 +153,20 @@ function Download-OfficeDeploymentTool {
     $zipPath = "$env:TEMP\officedeploymenttool.zip"
     $extractPath = [Environment]::GetFolderPath("UserProfile") + "\Downloads"
 
-    Write-Host ">> Đang tải Office Deployment Tool từ GitHub..." -ForegroundColor Cyan
+    Write-Host ">> Dang tai Office Deployment Tool tu GitHub..." -ForegroundColor Cyan
     try {
         Invoke-WebRequest $url -OutFile $zipPath -UseBasicParsing -ErrorAction Stop
     } catch {
-        Write-Host "[X] Không thể tải Office Deployment Tool." -ForegroundColor Red
-        Write-Host "Chi tiết lỗi: $($_.Exception.Message)" -ForegroundColor DarkGray
+        Write-Host "[X] Khong the tai Office Deployment Tool." -ForegroundColor Red
+        Write-Host "Chi tiet loi: $($_.Exception.Message)" -ForegroundColor DarkGray
         Pause
         return
     }
 
-    Write-Host ">> Đang giải nén Office Deployment Tool vào thư mục Downloads..." -ForegroundColor Yellow
+    Write-Host ">> Dang giai nen Office Deployment Tool vao thu muc Downloads..." -ForegroundColor Yellow
     Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
 
-    Write-Host "[✓] Đã tải và giải nén Office Deployment Tool tại: $extractPath" -ForegroundColor Green
+    Write-Host "[✓] Da tai va giai nen Office Deployment Tool tai: $extractPath" -ForegroundColor Green
     Pause
 }
 
@@ -178,12 +175,12 @@ function Download-OfficeDeploymentTool {
 function Download-Config {
     while ($true) {
         Clear-Host
-        Write-Host "==========      Chọn Phiên Bản Office      ==========" -ForegroundColor Cyan
+        Write-Host "==========      Chon phien ban Office      ==========" -ForegroundColor Cyan
         Write-Host "[1] Office Professional Plus 2019" -ForegroundColor Green
         Write-Host "[2] Office Professional Plus 2021" -ForegroundColor Green
         Write-Host "[3] Office Professional Plus 2024" -ForegroundColor Green
-        Write-Host "[0] Quay lại menu chính" -ForegroundColor Red
-        $yearChoice = Read-Host "Chọn [1-3] hoặc [0] để quay lại"
+        Write-Host "[0] Quay lai menu chinh" -ForegroundColor Red
+        $yearChoice = Read-Host "Chon [1-3] hoac [0] de quay lai"
         if ($yearChoice -eq "0") { break }
 
         $yearMap = @{
@@ -193,14 +190,14 @@ function Download-Config {
         }
 
         if (-not $yearMap.ContainsKey($yearChoice)) {
-            Write-Host "[X] Lựa chọn không hợp lệ!" -ForegroundColor Red
+            Write-Host "[X] Lua chon khong hop le!" -ForegroundColor Red
             Pause
             continue
         }
 
         $year = $yearMap[$yearChoice]
 
-        Write-Host "`n--- Chọn kiến trúc ---" -ForegroundColor Cyan
+        Write-Host "`n--- Chon kien truc ---" -ForegroundColor Cyan
         Write-Host "[1] 32bit (x86)" -ForegroundColor Green
         Write-Host "[2] 64bit (x64)" -ForegroundColor Green
         $archChoice = Read-Host "Chọn [1-2]"
@@ -211,7 +208,7 @@ function Download-Config {
         }
 
         if (-not $archMap.ContainsKey($archChoice)) {
-            Write-Host "[X] Lựa chọn không hợp lệ!" -ForegroundColor Red
+            Write-Host "[X] Lua chon khong hop le!" -ForegroundColor Red
             Pause
             continue
         }
@@ -221,43 +218,43 @@ function Download-Config {
         $url = "https://raw.githubusercontent.com/knhuongnoi1407/config-office-download/main/$filename"
         $dest = [Environment]::GetFolderPath("UserProfile") + "\Downloads\$filename"
 
-        Write-Host ">> Đang tải $filename từ GitHub..." -ForegroundColor Cyan
+        Write-Host ">> Dang tai $filename tu GitHub..." -ForegroundColor Cyan
         Invoke-WebRequest $url -OutFile $dest
 
-        Write-Host "[✓] Đã lưu tại: $dest" -ForegroundColor Green
+        Write-Host "[✓] Da luu tai: $dest" -ForegroundColor Green
         Pause
     }
 }
 
 function Install-Office {
     Clear-Host
-    Write-Host "========== Cài Đặt Office ==========" -ForegroundColor Cyan
+    Write-Host "========== Cai dat Office ==========" -ForegroundColor Cyan
     Write-Host "[1] Office Professional Plus 2019" -ForegroundColor Green
     Write-Host "[2] Office Professional Plus 2021" -ForegroundColor Green
-    Write-Host "[3] Office Professional Plus 2024 (không khuyên dùng)" -ForegroundColor Green
-    Write-Host "[0] Quay lại" -ForegroundColor Red
-    $yearChoice = Read-Host "Chọn [1-3] hoặc [0] để quay lại"
+    Write-Host "[3] Office Professional Plus 2024 (khong khuyen dung)" -ForegroundColor Green
+    Write-Host "[0] Quay lai" -ForegroundColor Red
+    $yearChoice = Read-Host "Chon [1-3] hoac [0] de quay lai"
     if ($yearChoice -eq "0") { return }
 
     $yearMap = @{ "1" = "2019"; "2" = "2021"; "3" = "2024" }
 
     if (-not $yearMap.ContainsKey($yearChoice)) {
-        Write-Host "[X] Lựa chọn không hợp lệ!" -ForegroundColor Red
+        Write-Host "[X] Lua chon khong hop le!" -ForegroundColor Red
         Pause
         return
     }
 
     $year = $yearMap[$yearChoice]
 
-    Write-Host "`n--- Chọn kiến trúc ---" -ForegroundColor Cyan
+    Write-Host "`n--- Chon kien truc ---" -ForegroundColor Cyan
     Write-Host "[1] 32bit (x86)" -ForegroundColor Green
     Write-Host "[2] 64bit (x64)" -ForegroundColor Green
-    $archChoice = Read-Host "Chọn [1-2]"
+    $archChoice = Read-Host "Chon [1-2]"
 
     $archMap = @{ "1" = "32bit"; "2" = "64bit" }
 
     if (-not $archMap.ContainsKey($archChoice)) {
-        Write-Host "[X] Lựa chọn không hợp lệ!" -ForegroundColor Red
+        Write-Host "[X] Lua chon khong hop le!" -ForegroundColor Red
         Pause
         return
     }
@@ -266,12 +263,12 @@ function Install-Office {
     $folderName = "office$year"
 
     while ($true) {
-        $driveLetter = Read-Host "Nhập ổ đĩa bạn muốn lưu (ví dụ: C, D, E)"
+        $driveLetter = Read-Host "Nhap o dia ban muon luu (ví dụ: C, D, E)"
         $driveLetter = $driveLetter.ToUpper()
         if (Test-Path "$driveLetter`:") {
             break
         } else {
-            Write-Host "[X] Ổ đĩa không tồn tại! Vui lòng nhập lại." -ForegroundColor Red
+            Write-Host "[X] O dia khong ton tai! Vui long nhap lai." -ForegroundColor Red
         }
     }
 
@@ -282,65 +279,65 @@ function Install-Office {
     $odtZipPath = "$env:TEMP\officedeploymenttool.zip"
 
     if (Test-Path $officeDir) {
-        Write-Host "[!] Thư mục $officeDir đã tồn tại!" -ForegroundColor Yellow
-        Write-Host "[1] Ghi đè toàn bộ (xoá thư mục cũ và tạo mới)" -ForegroundColor Red
-        Write-Host "[2] Sử dụng thư mục hiện có" -ForegroundColor Green
-        Write-Host "[3] Nhập ổ đĩa khác" -ForegroundColor Cyan
-        $overwriteChoice = Read-Host "Chọn hành động [1-3]"
+        Write-Host "[!] Thu muc $officeDir da ton tai!" -ForegroundColor Yellow
+        Write-Host "[1] Ghi de toan bo (xoa thu muc cu va tao moi)" -ForegroundColor Red
+        Write-Host "[2] Su dung thu muc hien co" -ForegroundColor Green
+        Write-Host "[3] Nhap o dia khac" -ForegroundColor Cyan
+        $overwriteChoice = Read-Host "Chon hanh dong [1-3]"
         switch ($overwriteChoice) {
             "1" { Remove-Item -Path $officeDir -Recurse -Force; New-Item -Path $officeDir -ItemType Directory -Force | Out-Null }
-            "2" { Write-Host "[i] Sử dụng thư mục hiện có: $officeDir" -ForegroundColor Gray }
+            "2" { Write-Host "[i] Su dung thu muc hien co: $officeDir" -ForegroundColor Gray }
             "3" { Install-Office; return }
-            Default { Write-Host "[X] Lựa chọn không hợp lệ. Thoát." -ForegroundColor Red; Pause; return }
+            Default { Write-Host "[X] Lua chon khong hop le. Thoat." -ForegroundColor Red; Pause; return }
         }
     } else {
-        Write-Host ">> Đang tạo thư mục $folderName tại ổ đĩa $driveLetter..." -ForegroundColor Yellow
+        Write-Host ">> Dang tao thu muc $folderName tai o dia $driveLetter..." -ForegroundColor Yellow
         New-Item -Path $officeDir -ItemType Directory -Force | Out-Null
     }
 
-    Write-Host ">> Đang tải config Office ($configFileName)..." -ForegroundColor Cyan
+    Write-Host ">> Dang tai config Office ($configFileName)..." -ForegroundColor Cyan
     try {
         Invoke-WebRequest $configURL -OutFile "$officeDir\$configFileName" -UseBasicParsing -ErrorAction Stop
     } catch {
-        Write-Host "[X] Không thể tải file cấu hình!" -ForegroundColor Red
-        Write-Host "Chi tiết lỗi: $($_.Exception.Message)" -ForegroundColor DarkGray
+        Write-Host "[X] Khong the tao file cau hinh!" -ForegroundColor Red
+        Write-Host "Chi tiet loi: $($_.Exception.Message)" -ForegroundColor DarkGray
         Pause
         return
     }
 
-    Write-Host ">> Đang tải Office Deployment Tool (.zip)..." -ForegroundColor Cyan
+    Write-Host ">> Dang tai Office Deployment Tool (.zip)..." -ForegroundColor Cyan
     try {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
         Invoke-WebRequest $odtZipURL -OutFile $odtZipPath -UseBasicParsing -ErrorAction Stop
     } catch {
-        Write-Host "[X] Không thể tải Office Deployment Tool (.zip)!" -ForegroundColor Red
-        Write-Host "Chi tiết lỗi: $($_.Exception.Message)" -ForegroundColor DarkGray
+        Write-Host "[X] Khong the tai Office Deployment Tool (.zip)!" -ForegroundColor Red
+        Write-Host "Chi tiet loi: $($_.Exception.Message)" -ForegroundColor DarkGray
         Pause
         return
     }
 
-    Write-Host ">> Đang giải nén Office Deployment Tool vào thư mục $folderName..." -ForegroundColor Yellow
+    Write-Host ">> Dang giai ne Office Deployment Tool vao thu muc $folderName..." -ForegroundColor Yellow
     try {
         Expand-Archive -Path $odtZipPath -DestinationPath $officeDir -Force
         Remove-Item $odtZipPath -Force
     } catch {
-        Write-Host "[X] Lỗi khi giải nén Office Deployment Tool!" -ForegroundColor Red
+        Write-Host "[X] Loi khi giai nen Office Deployment Tool!" -ForegroundColor Red
         Pause
         return
     }
 
-    Write-Host "`n[✓] Giải nén xong công cụ Office Deployment Tool." -ForegroundColor Green
+    Write-Host "`n[✓] Giai nen cong cu Office Deployment Tool." -ForegroundColor Green
 
     $exePath = Join-Path $officeDir "officedeploymenttool_18827-20140.exe"
     $setupPath = Join-Path $officeDir "setup.exe"
 
     if (Test-Path $exePath) {
-    Write-Host "`n[!] Đang mở file ODT để người dùng chọn thư mục lưu và nhấn Accept..." -ForegroundColor Yellow
+    Write-Host "`n[!] Dang mo file ODT de nguoi dung chon thu muc va an Accept..." -ForegroundColor Yellow
     Start-Process -FilePath $exePath
 
-    Write-Host ">> Sau khi cửa sổ hiện ra, hãy chọn thư mục: This PC > $driveLetter > $folderName" -ForegroundColor Cyan
-    Write-Host ">> Và nhấn nút Accept để bung file setup.exe." -ForegroundColor Cyan
-    Write-Host ">> Đang đợi file setup.exe được bung ra..." -ForegroundColor Cyan
+    Write-Host ">> Sau khi cua so hien ra, hay nhan: This PC > $driveLetter > $folderName" -ForegroundColor Cyan
+    Write-Host ">> Va nhan nut Accept de bung file setup.exe." -ForegroundColor Cyan
+    Write-Host ">> Dang doi file setup.exe duoc bung ra..." -ForegroundColor Cyan
 
     $timeout = 60
     $elapsed = 0
@@ -350,7 +347,7 @@ function Install-Office {
     }
 
     if (Test-Path $setupPath) {
-        Write-Host "[✓] setup.exe đã sẵn sàng!" -ForegroundColor Green
+        Write-Host "[✓] setup.exe da san sang!" -ForegroundColor Green
 
         $guidePath = Join-Path $officeDir "Hướng dẫn sử dụng.txt"
         $guideContent = @(
@@ -363,9 +360,9 @@ function Install-Office {
             "setup.exe /configure $configFileName"
         )
         $guideContent | Set-Content -Path $guidePath -Encoding UTF8
-        Write-Host "`n[✓] Đã tạo file 'Hướng dẫn sử dụng.txt' trong thư mục $folderName" -ForegroundColor Green
+        Write-Host "`n[✓] Da tao file 'Hướng dẫn sử dụng.txt' trong thu muc $folderName" -ForegroundColor Green
     } else {
-        Write-Host "[X] Không tìm thấy setup.exe sau 60 giây. Vui lòng kiểm tra lại thao tác!" -ForegroundColor Red
+        Write-Host "[X] Khong tim thay setup.exe sau 60 giay. Vui long kiem tra lai thao tac!" -ForegroundColor Red
     }
     }
 
@@ -374,7 +371,7 @@ function Install-Office {
 }
 
 function Install-LocalSend {
-    Write-Host ">> Đang tải LocalSend (Windows)... " -ForegroundColor Cyan
+    Write-Host ">> Đang tai LocalSend (Windows)... " -ForegroundColor Cyan
     $url = "https://github.com/localsend/localsend/releases/download/v1.17.0/LocalSend-1.17.0-windows-x86-64.exe"
     $file = "$env:TEMP\LocalSend.exe"
 
@@ -383,49 +380,49 @@ function Install-LocalSend {
         $headers = @{ "User-Agent" = "Mozilla/5.0" }
         Invoke-WebRequest -Uri $url -OutFile $file -Headers $headers -UseBasicParsing -ErrorAction Stop
     } catch {
-        Write-Host "[X] Lỗi khi tải LocalSend: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "[X] Loi khi tai LocalSend: $($_.Exception.Message)" -ForegroundColor Red
         Pause
         return
     }
 
-    Write-Host ">> Đang chạy LocalSend..." -ForegroundColor Yellow
+    Write-Host ">> Dang chay LocalSend..." -ForegroundColor Yellow
     Start-Process $file
-    Write-Host "[✓] Đã mở LocalSend!" -ForegroundColor Green
+    Write-Host "[✓] Da mo LocalSend!" -ForegroundColor Green
     Pause
 }
 
 function Install-WinRAR {
     Clear-Host
-    Write-Host "========== Chọn phiên bản WinRAR ==========" -ForegroundColor Cyan
+    Write-Host "========== Chon phien ban WinRAR ==========" -ForegroundColor Cyan
     Write-Host "[1] 64-bit" -ForegroundColor Green
     Write-Host "[2] 32-bit" -ForegroundColor Green
-    Write-Host "[0] Quay lại" -ForegroundColor Red
-    $archChoice = Read-Host "Chọn [1-2] hoặc [0] để quay lại"
+    Write-Host "[0] Quay lai" -ForegroundColor Red
+    $archChoice = Read-Host "Chon [1-2] hoac [0] de quay lai"
 
     switch ($archChoice) {
         "0" { return }
         "1" { $url = "https://www.rarlab.com/rar/winrar-x64-602.exe" }   # 64-bit
         "2" { $url = "https://www.rarlab.com/rar/winrar-x86-602.exe" }    # 32-bit
-        Default { Write-Host "[X] Lựa chọn không hợp lệ!" -ForegroundColor Red; Pause; return }
+        Default { Write-Host "[X] Lua chon khong hop le!" -ForegroundColor Red; Pause; return }
     }
 
     $file = "$env:TEMP\winrar.exe"
 
-    Write-Host ">> Đang tải WinRAR từ $url ..." -ForegroundColor Cyan
+    Write-Host ">> Dang tai WinRAR tu $url ..." -ForegroundColor Cyan
     try {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
         Invoke-WebRequest -Uri $url -OutFile $file -UseBasicParsing -ErrorAction Stop
     } catch {
-        Write-Host "[X] Lỗi khi tải WinRAR: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "[X] Loi khi tai WinRAR: $($_.Exception.Message)" -ForegroundColor Red
         Pause
         return
     }
 
-    Write-Host ">> Đang cài WinRAR và tích hợp vào Windows..." -ForegroundColor Yellow
+    Write-Host ">> Dang cai WinRAR va tich hop vao Windows..." -ForegroundColor Yellow
     # /S = silent, /Reg = thiết lập mặc định cho ZIP và các định dạng, /D="..." = folder cài
     Start-Process -FilePath $file -ArgumentList "/S /Reg" -Wait
 
-    Write-Host "[✓] Đã cài WinRAR và đặt làm mặc định cho ZIP!" -ForegroundColor Green
+    Write-Host "[✓] Da cai WinRAR va dat lam mac dinh cho ZIP!" -ForegroundColor Green
     Pause
 }
 
@@ -434,7 +431,7 @@ function Install-WinRAR {
 function Main {
     while ($true) {
         Show-Menu
-        $choice = Read-Host "Chọn một tùy chọn [0-9]"
+        $choice = Read-Host "Chon mot tuy chon [0-9]"
 
         switch ($choice) {
             "1" { Install-VSCode }
@@ -448,18 +445,19 @@ function Main {
 	    "9" { Install-WinRAR }
             "0" {
 				Clear-Host
-    			Write-Host "Đang thoát..." -ForegroundColor Gray
+    			Write-Host "Dang thoat | Exting..." -ForegroundColor Gray
     			Start-Sleep -Milliseconds 500
     			exit
 			}
-            Default { Write-Host "[X] Lựa chọn không hợp lệ!" -ForegroundColor Red; Pause }
+            Default { Write-Host "[X] Lua chon khong hop le!" -ForegroundColor Red; Pause }
         }
     }
 }
 
 Main
-Write-Host "`nNhấn phím bất kỳ để thoát..." -ForegroundColor DarkGray
+Write-Host "`nNhan phim bat ki de thoat..." -ForegroundColor DarkGray
 Pause
+
 
 
 
