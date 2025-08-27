@@ -1,1 +1,133 @@
-<h1>PowerShell Scripts</h1>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KN Script — PowerShell Helper</title>
+  <meta name="description" content="Chạy tiện ích cài đặt phần mềm bằng PowerShell: irm https://knscript.vercel.app/get | iex" />
+  <meta property="og:title" content="KN Script — PowerShell Helper" />
+  <meta property="og:description" content="Chạy tiện ích cài đặt phần mềm bằng PowerShell: irm https://knscript.vercel.app/get | iex" />
+  <meta property="og:type" content="website" />
+  <meta name="color-scheme" content="dark light" />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #12172b;
+      --text: #e6e9f0;
+      --muted: #a9b2c7;
+      --accent: #5ad1ff;
+      --accent-2: #8b5cf6;
+      --border: #212844;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+    }
+    @media (prefers-color-scheme: light){
+      :root {
+        --bg: #f6f8ff;
+        --card: #ffffff;
+        --text: #0b1020;
+        --muted: #475069;
+        --accent: #0ea5e9;
+        --accent-2: #6d28d9;
+        --border: #e6e9f0;
+      }
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 80% -20%, rgba(138,92,246,.15), transparent 60%),
+                  radial-gradient(1000px 700px at -10% 110%, rgba(14,165,233,.15), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+      display:grid; place-items:center; padding:24px;
+    }
+    .container{width:min(980px, 100%);}
+    .card{
+      background:var(--card); border:1px solid var(--border); border-radius:18px; padding:28px; box-shadow: 0 10px 30px rgba(0,0,0,.20);
+    }
+    h1{font-size: clamp(28px, 4vw, 46px); margin:0 0 8px; letter-spacing:.5px}
+    .subtitle{color:var(--muted); margin:0 0 22px; font-size:clamp(14px,1.8vw,18px)}
+    .grid{display:grid; gap:18px; grid-template-columns: 1fr;}
+    @media (min-width:760px){ .grid{ grid-template-columns: 2fr 1fr; } }
+    .codebox{
+      background:#0a0f1e; border:1px solid var(--border); border-radius:14px; padding:14px; position:relative; overflow:auto;
+    }
+    .codebox code{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size:15px; color:#e2e8f0}
+    .btns{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    button, .ghost{
+      appearance:none; border:1px solid var(--border); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      color:var(--text); padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:600; transition:.2s transform, .2s opacity;
+    }
+    button:hover, .ghost:hover{ transform: translateY(-1px) }
+    .primary{border-color: transparent; background: linear-gradient(90deg, var(--accent), var(--accent-2)); color:#fff}
+    .note{font-size:13.5px; color:var(--muted)}
+    .features{display:grid; gap:12px; margin-top:10px}
+    .pill{display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,.04); border:1px dashed var(--border); padding:8px 10px; border-radius:999px; width:max-content}
+    .footer{margin-top:22px; font-size:13px; color:var(--muted); text-align:center}
+    a.link{color:var(--accent); text-decoration:none}
+    a.link:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="card">
+      <h1>KN Script</h1>
+      <p class="subtitle">Tiện ích cài đặt phần mềm qua PowerShell. Dành cho Windows 10/11.</p>
+
+      <div class="grid">
+        <!-- Left: How to run -->
+        <div>
+          <h3>Chạy nhanh trong PowerShell (Admin):</h3>
+          <div class="codebox" id="codebox">
+            <code id="cmd">irm https://knscript.vercel.app/get | iex</code>
+          </div>
+          <div class="btns">
+            <button class="primary" id="copyBtn">Copy lệnh</button>
+            <button class="ghost" id="adminBtn">Mở PowerShell (Admin)</button>
+            <a class="ghost" href="/browser-block.html">Hướng dẫn</a>
+          </div>
+          <p class="note">Lưu ý: Truy cập <code>/get</code> bằng trình duyệt sẽ hiển thị trang hướng dẫn (không tải script).</p>
+
+          <div class="features">
+            <span class="pill">✔ Cài VS Code, Python, WinRAR</span>
+            <span class="pill">✔ Cài Extensions cho VS Code</span>
+            <span class="pill">✔ Tải/thiết lập Office Deployment Tool</span>
+            <span class="pill">✔ Active Windows/Office (mở trang lệnh)</span>
+          </div>
+        </div>
+
+        <!-- Right: Card info -->
+        <aside>
+          <div class="card" style="padding:16px">
+            <h3 style="margin-top:0">Thông tin</h3>
+            <ul style="margin:10px 0 0 20px; line-height:1.7">
+              <li>Yêu cầu: Windows 10/11</li>
+              <li>Quyền: PowerShell chạy với quyền <b>Administrator</b></li>
+              <li>Mã nguồn: <a class="link" href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+
+      <p class="footer">© <span id="y"></span> KN Script. Made with ❤</p>
+    </section>
+  </main>
+
+  <script>
+    const copyBtn = document.getElementById('copyBtn');
+    const adminBtn = document.getElementById('adminBtn');
+    const cmd = document.getElementById('cmd').innerText.trim();
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    copyBtn.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(cmd); copyBtn.textContent = 'Đã copy ✓'; setTimeout(()=>copyBtn.textContent='Copy lệnh', 1800);} catch(e){ alert('Không copy được, hãy chọn thủ công.'); }
+    });
+
+    adminBtn.addEventListener('click', () => {
+      alert('Mở PowerShell (Admin) rồi dán lệnh:\n\n' + cmd);
+    });
+  </script>
+</body>
+</html>
