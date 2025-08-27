@@ -429,16 +429,6 @@ function Install-WinRAR {
     Pause
 }
 
-# Đảm bảo script này luôn ở UTF-8 with BOM
-try {
-    if ($MyInvocation.MyCommand.Path) {
-        $content = Get-Content $MyInvocation.MyCommand.Path -Raw
-        $utf8bom = New-Object System.Text.UTF8Encoding $true
-        [System.IO.File]::WriteAllText($MyInvocation.MyCommand.Path, $content, $utf8bom)
-    }
-} catch {
-    Write-Host "[!] Không thể tự convert sang UTF-8 BOM: $($_.Exception.Message)" -ForegroundColor Yellow
-}
 
 
 function Main {
@@ -470,6 +460,7 @@ function Main {
 Main
 Write-Host "`nNhấn phím bất kỳ để thoát..." -ForegroundColor DarkGray
 Pause
+
 
 
 
