@@ -263,7 +263,7 @@ function Install-Office {
     $folderName = "office$year"
 
     while ($true) {
-        $driveLetter = Read-Host "Nhap o dia ban muon luu (ví dụ: C, D, E)"
+        $driveLetter = Read-Host "Nhap o dia ban muon luu (vi du: C, D, E)"
         $driveLetter = $driveLetter.ToUpper()
         if (Test-Path "$driveLetter`:") {
             break
@@ -461,6 +461,7 @@ function Main {
 Main
 Write-Host "`nNhan phim bat ki de thoat..." -ForegroundColor DarkGray
 Pause
+
 
 
 
