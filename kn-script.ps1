@@ -349,18 +349,22 @@ function Install-Office {
     if (Test-Path $setupPath) {
         Write-Host "[✓] setup.exe da san sang!" -ForegroundColor Green
 
-        $guidePath = Join-Path $officeDir "Hướng dẫn sử dụng.txt"
+        $guidePath = Join-Path $officeDir "Huong dan su dung.txt"
         $guideContent = @(
-            "Hướng dẫn cài đặt Office thủ công:",
+            "Huong dan cai dat Office thu cong:",
             "",
-            "1. Mở Command Prompt (CMD) bằng quyền Administrator",
-            "2. Gõ lệnh sau để chuyển thư mục:",
+            "1. Mo Command Prompt (CMD) bang quyen Administrator",
+            "2. Go lenh sau de chuyen thu muc:",
             "cd /${driveLetter} ${driveLetter}:\$folderName",
-            "3. Gõ lệnh để bắt đầu cài đặt:",
-            "setup.exe /configure $configFileName"
+            "3. Go lenh de bat dau cai dat:",
+            "setup.exe /configure $configFileName",
+			"",
+			"",
+			"",
+			"Ban quyen Script thuoc KN"
         )
         $guideContent | Set-Content -Path $guidePath -Encoding UTF8
-        Write-Host "`n[✓] Da tao file 'Hướng dẫn sử dụng.txt' trong thu muc $folderName" -ForegroundColor Green
+        Write-Host "`n[✓] Da tao file 'Huong dan su dung.txt' trong thu muc $folderName" -ForegroundColor Green
     } else {
         Write-Host "[X] Khong tim thay setup.exe sau 60 giay. Vui long kiem tra lai thao tac!" -ForegroundColor Red
     }
@@ -457,6 +461,7 @@ function Main {
 Main
 Write-Host "`nNhan phim bat ki de thoat..." -ForegroundColor DarkGray
 Pause
+
 
 
 
