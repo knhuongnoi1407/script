@@ -113,26 +113,18 @@ function Install-Extensions {
     }
 
     $extensions = @(
-        "batisteo.vscode-django",
-		"battlebas.kivy-vscode",
-  		"chrisru.vscode-nightsky",
-		"donjayamanne.python-environment-manager",
-  		"donjayamanne.python-extension-pack",
-        "esbenp.prettier-vscode",
-        "github.github-vscode-theme",
-        "kevinrose.vsc-python-indent",
-        "ms-python.debugpy",
-        "ms-python.python",
-        "ms-python.vscode-pylance",
-        "negokaz.live-server-preview",
-        "njpwerner.autodocstring",
-        "pkief.material-icon-theme",
-        "ritwickdey.liveserver",
-        "streetsidesoftware.code-spell-checker",
-        "streetsidesoftware.code-spell-checker-vietnamese",
-        "visualstudioexptteam.intellicode-api-usage-examples",
-        "visualstudioexptteam.vscodeintellicode",
-        "wholroyd.jinja"
+        "chrisru.vscode-nightsky",
+		"christian-kohler.path-intellisense",
+		"esbenp.prettier-vscode",
+		"formulahendry.auto-rename-tag",
+		"github.github-vscode-theme",
+		"ms-edgedevtools.vscode-edge-devtools",
+		"ms-vscode.cpptools",
+		"negokaz.live-server-preview",
+		"pkief.material-icon-theme",
+		"ritwickdey.liveserver",
+		"streetsidesoftware.code-spell-checker",
+		"streetsidesoftware.code-spell-checker-vietnamese"
     )
 
     Write-Host ">> Dang cai cac extention VS Code..." -ForegroundColor Cyan
@@ -461,6 +453,7 @@ function Main {
 Main
 Write-Host "`nNhan phim bat ki de thoat..." -ForegroundColor DarkGray
 Pause
+
 
 
 
